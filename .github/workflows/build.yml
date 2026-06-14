@@ -33,7 +33,6 @@ jobs:
           export PATH="/opt/gradle-8.7/bin:$PATH"
           echo "/opt/gradle-8.7/bin" >> $GITHUB_PATH
           gradle wrapper --gradle-version 8.7 --distribution-type bin
-          echo "Wrapper jar: $(wc -c < gradle/wrapper/gradle-wrapper.jar) bytes"
           chmod +x gradlew
 
       - name: 🎨 Download Icon
@@ -57,29 +56,20 @@ jobs:
           sed -i 's/versionName "[^"]*"/versionName "${{ github.event.inputs.version_name }}"/' app/build.gradle
 
       - name: 🔨 Build APK
-        run: ./gradlew assembleDebug assembleRelease --no-daemon --stacktrace
+        run: ./gradlew assembleDebug assembleRelease --no-daemon
 
       - name: 📛 Rename APK
         run: |
-          VERSION=$(grep "versionName" app/build.gradle | head -1 | grep -o '"[^"]*"' | tr -d '"')
+          VERSION=$(grep versionName app/build.gradle | head -1 | sed 's/.*"\(.*\)".*/\1/' | tr -d '[:space:]')
           DATE=$(date +%Y%m%d)
-          find app/build/outputs/apk -name "*.apk" | while read f; do
-            DIR=$(dirname "$f")
-            TYPE=$(echo "$f" | grep -o "debug\|release")
-            mv "$f" "$DIR/CariApp-v${VERSION}-${TYPE}-${DATE}.apk" 2>/dev/null || true
-          done
-          find app/build/outputs/apk -name "*.apk"
+          mkdir -p app/build/outputs/apk/renamed
+          find app/build/outputs/apk/debug -name "*.apk" | head -1 | xargs -I{} cp {} "app/build/outputs/apk/renamed/CariApp-v${VERSION}-debug-${DATE}.apk"
+          find app/build/outputs/apk/release -name "*.apk" | head -1 | xargs -I{} cp {} "app/build/outputs/apk/renamed/CariApp-v${VERSION}-release-${DATE}.apk"
+          ls app/build/outputs/apk/renamed/
 
-      - name: 📤 Upload Debug APK
+      - name: 📤 Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: CariApp-Debug
-          path: app/build/outputs/apk/debug/*.apk
-          retention-days: 30
-
-      - name: 📤 Upload Release APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: CariApp-Release
-          path: app/build/outputs/apk/release/*.apk
+          name: CariApp-APK
+          path: app/build/outputs/apk/renamed/*.apk
           retention-days: 30
