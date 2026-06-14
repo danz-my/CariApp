@@ -1,8 +1,6 @@
 name: 🚀 Build APK
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
     inputs:
       version_name:
@@ -30,15 +28,11 @@ jobs:
 
       - name: 🔧 Install Gradle & Regenerate Wrapper
         run: |
-          # Install Gradle 8.7
           wget -q https://services.gradle.org/distributions/gradle-8.7-bin.zip -O /tmp/g.zip
           unzip -q /tmp/g.zip -d /opt/
           export PATH="/opt/gradle-8.7/bin:$PATH"
           echo "/opt/gradle-8.7/bin" >> $GITHUB_PATH
-
-          # Regenerate gradle wrapper using real gradle
           gradle wrapper --gradle-version 8.7 --distribution-type bin
-          
           echo "Wrapper jar: $(wc -c < gradle/wrapper/gradle-wrapper.jar) bytes"
           chmod +x gradlew
 
