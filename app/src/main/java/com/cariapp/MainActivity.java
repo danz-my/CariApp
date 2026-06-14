@@ -16,6 +16,9 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.graphics.Insets;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,6 +58,13 @@ public class MainActivity extends AppCompatActivity {
         layout.addView(webView);
         layout.addView(progressBar);
         setContentView(layout);
+
+        // Beri padding agar konten tidak tertimpa status bar & navbar
+        ViewCompat.setOnApplyWindowInsetsListener(layout, (v, insets) -> {
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
 
         WebSettings s = webView.getSettings();
         s.setJavaScriptEnabled(true);
