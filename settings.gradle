@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "StoreApp"
+rootProject.name = "VideKu"
 include ':app'
