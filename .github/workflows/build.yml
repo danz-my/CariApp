@@ -38,7 +38,7 @@ jobs:
       - name: 🎨 Download Icon
         run: |
           sudo apt-get install -y imagemagick -q
-          curl -L "https://raw.githubusercontent.com/danz-my/jemfut_image/main/storap.png" \
+          curl -L "https://raw.githubusercontent.com/danz-my/jemfut_image/main/videku.png" \
             -A "Mozilla/5.0" -o /tmp/icon.png --retry 3 || true
           if [ -f /tmp/icon.png ] && [ $(wc -c < /tmp/icon.png) -gt 1000 ]; then
             convert /tmp/icon.png -resize 48x48   app/src/main/res/mipmap-mdpi/ic_launcher.png
