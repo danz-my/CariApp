@@ -63,8 +63,8 @@ jobs:
           VERSION=$(grep versionName app/build.gradle | head -1 | sed 's/.*"\(.*\)".*/\1/' | tr -d '[:space:]')
           DATE=$(date +%Y%m%d)
           mkdir -p app/build/outputs/apk/renamed
-          find app/build/outputs/apk/debug -name "*.apk" | head -1 | xargs -I{} cp {} "app/build/outputs/apk/renamed/CariApp-v${VERSION}-debug-${DATE}.apk"
-          find app/build/outputs/apk/release -name "*.apk" | head -1 | xargs -I{} cp {} "app/build/outputs/apk/renamed/CariApp-v${VERSION}-release-${DATE}.apk"
+          find app/build/outputs/apk/debug -name "*.apk" | head -1 | xargs -I{} cp {} "app/build/outputs/apk/renamed/VideKu-v${VERSION}-debug-${DATE}.apk"
+          find app/build/outputs/apk/release -name "*.apk" | head -1 | xargs -I{} cp {} "app/build/outputs/apk/renamed/VideKu-v${VERSION}-release-${DATE}.apk"
           ls app/build/outputs/apk/renamed/
 
       - name: 📤 Upload APK
