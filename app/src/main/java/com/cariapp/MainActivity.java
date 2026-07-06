@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     // ============================================================
     //  KONFIGURASI — Edit sesuai kebutuhan
     // ============================================================
-    private static final String APP_URL = "https://cariapk.vercel.app";
+    private static final String APP_URL = "https://videku-gold.vercel.app";
     // ============================================================
 
     private WebView webView;
